@@ -1,0 +1,6 @@
+{
+	"meta": {
+		"title": "GetY 连接器",
+		"description": "把 DeepSeek Harness 的会话历史分享给 GetY，并选择要分享的工作区。"
+	}
+}

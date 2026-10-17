@@ -1,0 +1,39 @@
+{
+  "id": "workbuddy_sessions",
+  "name": "WorkBuddy",
+  "version": "1.0.0",
+  "min_gety_app_version": "0.5.1",
+  "capabilities": ["data-source"],
+  "entry": "dist/main.js",
+  "icon": "assets/workbuddy.svg",
+  "description": "Indexes local WorkBuddy session metadata and agent traces as searchable markdown documents.",
+  "author": {
+    "name": "GetY community"
+  },
+  "schedule": {
+    "strategy": "interval",
+    "interval_seconds": 600
+  },
+  "config": {
+    "fields": [
+      {
+        "id": "include_tool_calls",
+        "title": "Include tool calls",
+        "type": "checkbox",
+        "description": "Include brief tool call summaries from local agent traces. Tool outputs are never indexed.",
+        "default_value": false
+      },
+      {
+        "id": "include_metadata_only_sessions",
+        "title": "Include sessions without local traces",
+        "type": "checkbox",
+        "description": "Index title, workspace, model, and status for sessions that have no local agent trace.",
+        "default_value": true
+      }
+    ]
+  },
+  "doc_link": {
+    "kind": "url",
+    "field": "url"
+  }
+}

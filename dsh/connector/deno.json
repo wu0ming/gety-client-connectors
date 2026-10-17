@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "lib": ["deno.window", "deno.ns", "dom"],
+    "strict": true,
+    "noUncheckedIndexedAccess": true
+  },
+  "fmt": {
+    "exclude": [
+      "dev/runs",
+      "dev/.runner",
+      "dist",
+      "assets",
+      "src/vendor/fzstd.js"
+    ]
+  },
+  "lint": {
+    "exclude": ["dev/runs", "dev/.runner", "dist", "src/vendor/fzstd.js"]
+  },
+  "imports": {
+    "@gety-ai/connector-sdk": "./dev/sdk_shim.ts"
+  },
+  "tasks": {
+    "build": "deno bundle --external @gety-ai/connector-sdk -o dist/main.js src/index.ts",
+    "check": "deno check src/index.ts",
+    "test": "deno test -A src/",
+    "verify": "deno fmt --check && deno lint && deno task check && deno task test && deno task build"
+  }
+}

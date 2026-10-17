@@ -1,0 +1,9 @@
+# Development output
+**/dev/runs/
+**/dev/.runner/
+node_modules/
+_work/
+
+# Local GetY state
+*.log
+*.tmp

@@ -1,0 +1,32 @@
+name: verify
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.8.1
+      - name: Verify DSH connector
+        working-directory: dsh/connector
+        run: deno task verify
+      - name: Verify WorkBuddy connector
+        working-directory: workbuddy/connector
+        run: deno task verify
+      - name: Check DSH plugin JavaScript and tests
+        run: |
+          node --check dsh/plugin/index.js
+          node --check dsh/plugin/client.js
+          node --test dsh/plugin/index.test.js
+      - name: Check DSH connector snapshot parity
+        run: diff -qr dsh/connector dsh/plugin/connector
+      - name: Check generated bundles are current
+        run: git diff --exit-code -- dsh/connector/dist/main.js workbuddy/connector/dist/main.js

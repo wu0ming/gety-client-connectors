@@ -1,0 +1,4 @@
+- insert:
+    - id: gety-connector
+      name: '@local/dsh-gety-connector'
+      config: {}

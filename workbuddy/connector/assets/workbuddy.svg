@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="WorkBuddy">
+  <defs>
+    <linearGradient id="wb-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4c1d95"/>
+      <stop offset="0.55" stop-color="#6d28d9"/>
+      <stop offset="1" stop-color="#c2410c"/>
+    </linearGradient>
+    <linearGradient id="wb-lens" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff7ed"/>
+      <stop offset="1" stop-color="#fed7aa"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="116" fill="url(#wb-bg)"/>
+  <path d="M104 158c0-20 16-36 36-36h232c20 0 36 16 36 36v132c0 20-16 36-36 36H236l-74 64c-10 9-24 2-24-12v-52h-2c-20 0-36-16-36-36z" fill="none" stroke="#ffffff" stroke-width="22" stroke-linejoin="round" opacity="0.95"/>
+  <path d="M164 196l28 78 26-52 26 52 28-78" fill="none" stroke="#ffffff" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="344" cy="336" r="58" fill="none" stroke="url(#wb-lens)" stroke-width="24"/>
+  <path d="M386 378l42 42" stroke="url(#wb-lens)" stroke-width="26" stroke-linecap="round"/>
+</svg>
