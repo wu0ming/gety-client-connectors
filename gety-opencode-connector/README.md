@@ -9,6 +9,8 @@
 [gety-codex-connector](https://github.com/gety-ai/gety-codex-connector)
 的文档契约实现。
 
+> **实机测试：通过（维护者反馈，2026-10-19）**。维护者已在工作电脑上测试该连接器，确认插件运行正常。此为实际使用反馈，不代表所有系统、OpenCode/GetY 版本均已验证。
+
 ## 索引内容
 
 - 每个会话一个文档：`doc_type = opencode:session`，稳定 ID
