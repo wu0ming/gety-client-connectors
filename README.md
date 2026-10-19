@@ -7,8 +7,6 @@
 - **OpenCode**：从本地 `opencode.db` 索引会话和用户/助手对话；不索引工具输出。
 - **Trae**：索引本地记忆摘要、话题、可选项目记忆；全局用户档案默认不索引。
 
-**实机验证（2026-10-19）**：维护者反馈，OpenCode 和 Trae 连接器已在工作电脑上测试，插件运行正常。此为用户实测反馈，不等同于对所有系统和版本的兼容性保证。
-
 中文文档：[安装与打包](docs/release-readiness.md) ·
 [实现经验](docs/connector-playbook.md) · [验证记录](docs/verification.md)。
 
