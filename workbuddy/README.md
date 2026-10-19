@@ -4,6 +4,10 @@ A GetY custom connector that makes local WorkBuddy sessions searchable in
 [GetY](https://gety.ai). WorkBuddy has no plugin/marketplace hook for this, so
 the connector is installed directly into GetY.
 
+> **Manual test: passed (2026-10-19).** The maintainer has installed and used
+> this connector successfully. This does not imply compatibility with all
+> environments or versions.
+
 ## What is indexed
 
 WorkBuddy is cloud-first: the desktop client keeps a local **session index** and
