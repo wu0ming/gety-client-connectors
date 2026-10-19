@@ -3,6 +3,10 @@
 Two pieces that make DeepSeek Harness (DSH) sessions searchable in
 [GetY](https://gety.ai):
 
+> **Manual test: passed (2026-10-19).** The maintainer has installed and used
+> this connector successfully. This does not imply compatibility with all
+> environments or versions.
+
 | Part | Directory | Role |
 | --- | --- | --- |
 | GetY custom connector | `connector/` | Indexes DSH session logs (`session.v4.jsonl.zstd`) as `dsh:session` documents. |
