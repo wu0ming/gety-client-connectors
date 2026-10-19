@@ -1,0 +1,42 @@
+{
+	"id": "trae_memory",
+	"name": "Trae",
+	"version": "0.1.0",
+	"min_gety_app_version": "0.5.1",
+	"capabilities": ["data-source"],
+	"entry": "dist/main.js",
+	"icon": "assets/trae-color.svg",
+	"description": "Indexes local Trae memory files (session summaries, topics, project memory) as searchable markdown documents.",
+	"author": {
+		"name": "Gety"
+	},
+	"schedule": {
+		"strategy": "interval",
+		"interval_seconds": 600
+	},
+	"config": {
+		"fields": [
+			{
+				"id": "memory_dir",
+				"title": "Trae memory directory",
+				"type": "directory",
+				"description": "Folder containing projects/ and user_profile.md. Leave empty to auto-detect (%USERPROFILE%\\.trae-cn\\memory).",
+				"default_value": ""
+			},
+			{
+				"id": "include_project_memory",
+				"title": "Include project memory",
+				"type": "checkbox",
+				"description": "Index each project's project_memory.md.",
+				"default_value": true
+			},
+			{
+				"id": "include_user_profile",
+				"title": "Include user profile",
+				"type": "checkbox",
+				"description": "Index the global user_profile.md.",
+				"default_value": false
+			}
+		]
+	}
+}

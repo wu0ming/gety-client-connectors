@@ -1,0 +1,42 @@
+{
+	"id": "opencode_sessions",
+	"name": "OpenCode",
+	"version": "0.1.0",
+	"min_gety_app_version": "0.5.1",
+	"capabilities": ["data-source"],
+	"entry": "dist/main.js",
+	"icon": "assets/opencode-color.svg",
+	"description": "Indexes local OpenCode sessions from the on-device SQLite database as searchable markdown documents.",
+	"author": {
+		"name": "Gety"
+	},
+	"schedule": {
+		"strategy": "interval",
+		"interval_seconds": 600
+	},
+	"config": {
+		"fields": [
+			{
+				"id": "opencode_dir",
+				"title": "OpenCode data directory",
+				"type": "directory",
+				"description": "Folder containing opencode.db. Leave empty to auto-detect (%USERPROFILE%\\.local\\share\\opencode).",
+				"default_value": ""
+			},
+			{
+				"id": "include_tool_calls",
+				"title": "Include tool calls",
+				"type": "checkbox",
+				"description": "Include one-line tool call summaries. Tool outputs are never indexed.",
+				"default_value": false
+			},
+			{
+				"id": "include_archived_sessions",
+				"title": "Include archived sessions",
+				"type": "checkbox",
+				"description": "Also index sessions that are archived in OpenCode.",
+				"default_value": true
+			}
+		]
+	}
+}
