@@ -1,21 +1,27 @@
 # GetY Client Connectors
 
-让 GetY 检索 DeepSeek Harness（DSH）与 WorkBuddy 的本地会话。
-两套接入方案在同一个仓库维护，可按需独立安装：
+让 GetY 检索多款本地 AI 客户端的会话与记忆。目前在同一仓库维护 **4 款可独立安装的连接器**：
 
-- **DSH**：GetY 连接器 + DSH 插件，提供一键连接与工作区分享选择，默认全选。
-- **WorkBuddy**：直接安装到 GetY 的连接器，检索本地会话索引与已落盘的 trace；未落盘的云端正文不在覆盖范围内。
+- **DeepSeek Harness（DSH）**：GetY 连接器 + DSH 插件，一键连接，可选择共享工作区（默认全选）。
+- **WorkBuddy**：检索本地会话索引与已落盘的 trace；未落盘的云端正文不在覆盖范围内。
+- **OpenCode**：从本地 `opencode.db` 索引会话和用户/助手对话；不索引工具输出。
+- **Trae**：索引本地记忆摘要、话题、可选项目记忆；全局用户档案默认不索引。
+
+**实机验证（2026-10-19）**：维护者反馈，OpenCode 和 Trae 连接器已在工作电脑上测试，插件运行正常。此为用户实测反馈，不等同于对所有系统和版本的兼容性保证。
 
 中文文档：[安装与打包](docs/release-readiness.md) ·
 [实现经验](docs/connector-playbook.md) · [验证记录](docs/verification.md)。
 
-Two [GetY](https://gety.ai) custom connectors that make local AI-client sessions
-searchable, plus the playbook distilled from building them.
+Four [GetY](https://gety.ai) connectors for searching local AI-client sessions and
+memory, plus a reusable development playbook. The maintainer reports that the
+new OpenCode and Trae connectors worked on their work computer (2026-10-19).
 
 | Connector | Client | What it indexes | One-click? |
 | --- | --- | --- | --- |
 | [`dsh/`](dsh/) | DeepSeek Harness | Full session logs (`session.v4.jsonl.zstd`, multi-frame zstd) | Yes — DSH plugin with a workspace picker |
 | [`workbuddy/`](workbuddy/) | WorkBuddy | Local session index (SQLite) + local agent traces | Install script (WorkBuddy has no plugin hook) |
+| [`gety-opencode-connector/`](gety-opencode-connector/) | OpenCode | Local `opencode.db` sessions and user/assistant messages | Install folder in GetY |
+| [`gety-trae-connector/`](gety-trae-connector/) | Trae | Session memory summaries, topics, optional project memory/profile | Install folder in GetY |
 
 Read the reusable guide: **[docs/connector-playbook.md](docs/connector-playbook.md)**.
 
@@ -56,9 +62,49 @@ powershell -ExecutionPolicy Bypass -File .\scripts\install-workbuddy.ps1
 
 See [workbuddy/README.md](workbuddy/README.md).
 
+## OpenCode
+
+[`gety-opencode-connector/`](gety-opencode-connector/) indexes sessions from the
+local OpenCode SQLite database (`opencode.db`), preserving user/assistant
+conversation text. Tool outputs are excluded; optional one-line tool call
+summaries can be enabled. The connector reads a temporary copy of the database
+and its WAL file to avoid locking the live database.
+
+**Install (GetY 0.5.1+):**
+
+```powershell
+cd gety-opencode-connector
+deno task build
+```
+
+Then open **GetY → Settings → Connectors → Install Connector** and select
+`gety-opencode-connector/` (the directory containing `manifest.json`).
+Leave the data directory blank to auto-detect or select the folder containing
+`opencode.db`. See [OpenCode setup and details](gety-opencode-connector/README.md).
+
+## Trae
+
+[`gety-trae-connector/`](gety-trae-connector/) reads local Trae memory files
+(default: `%USERPROFILE%\\.trae-cn\\memory`): session summary JSONL,
+`topics.md`, optional `project_memory.md`, and optional `user_profile.md`.
+It indexes **memory summaries, not Trae's complete chat database**.
+Project memory is enabled by default, while user profile indexing is disabled
+by default.
+
+**Install (GetY 0.5.1+):**
+
+```powershell
+cd gety-trae-connector
+deno task build
+```
+
+Install `gety-trae-connector/` via the same GetY connector settings page,
+then review its local memory directory and privacy options.
+See [Trae setup and details](gety-trae-connector/README.md).
+
 ## Verify
 
-Run both connector checks with the Deno bundled in GetY:
+Run the original DSH / WorkBuddy checks with the Deno bundled in GetY:
 
 ```powershell
 $deno = "$env:LOCALAPPDATA\Gety\deno.exe"
@@ -66,10 +112,21 @@ Push-Location dsh\connector;        & $deno task verify; Pop-Location
 Push-Location workbuddy\connector;  & $deno task verify; Pop-Location
 ```
 
-The `verify` task runs formatting, linting, type checking, unit tests, and a
-build. CI also checks that the DSH plugin's bundled connector matches its
-canonical source and checks the plugin JavaScript. These checks do not install
-the connectors into a live GetY client.
+For the new OpenCode and Trae connectors, run in each directory:
+
+```powershell
+Push-Location gety-opencode-connector; deno task verify; Pop-Location
+Push-Location gety-trae-connector;     deno task verify; Pop-Location
+```
+
+The `verify` tasks format, lint, type-check, test, and build each connector.
+The existing GitHub Actions workflow covers the original DSH / WorkBuddy
+project checks; it has not been extended here to the new connectors.
+Automated checks are separate from installing and trying the plugins in GetY.
+
+**Manual test status:** On **2026-10-19**, the maintainer confirmed successful
+testing of the OpenCode and Trae plugins on their work computer. The underlying
+test environment and coverage are not documented in this repository.
 
 For a Chinese quick start and the release scope, see
 [docs/release-readiness.md](docs/release-readiness.md). To prepare runtime
@@ -87,6 +144,8 @@ dsh/
   plugin/                 DSH plugin (Host + Client + bundled connector)
 workbuddy/
   connector/              GetY connector for WorkBuddy
+gety-opencode-connector/   GetY connector for local OpenCode sessions
+gety-trae-connector/      GetY connector for local Trae memories
 scripts/
   install-workbuddy.ps1
 docs/
@@ -97,16 +156,16 @@ docs/
 
 ## Design principles
 
-- **Local only.** Connectors read local session files; no client credentials,
-  no network calls.
-- **Conversation only.** Tool outputs, reasoning, system prompts, and injected
-  context are not indexed.
-- **Stable IDs.** One document per session (or orphan trace), keyed by a stable
-  UUID/path.
-- **Incremental.** mtime/size fingerprints, content hashes, and a parse cache
-  keep polls cheap.
-- **Honest coverage.** When a client keeps content in the cloud, the document
-  says exactly what was and was not indexed.
+- **Local data sources.** The connectors read local database or memory files,
+  rather than fetching AI-client conversations from cloud APIs.
+- **Minimize sensitive content.** Tool outputs and reasoning are not included
+  in indexed chat transcripts. Trae user-profile indexing is opt-in.
+- **Stable document IDs.** Use session IDs or source paths so repeat polls
+  update the same search documents.
+- **Incremental updates.** Re-index changed source data and remove documents
+  whose source files/sessions have disappeared.
+- **Honest coverage.** WorkBuddy may have cloud-only conversations; Trae
+  provides saved memory summaries rather than its full chat text.
 
 ## License
 
