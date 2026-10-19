@@ -7,12 +7,16 @@
 - **OpenCode**：从本地 `opencode.db` 索引会话和用户/助手对话；不索引工具输出。
 - **Trae**：索引本地记忆摘要、话题、可选项目记忆；全局用户档案默认不索引。
 
+**实机试用状态：四个连接器（DSH / WorkBuddy / OpenCode / Trae）均已由维护者实际安装、试用并确认正常运行（2026-10-19）。** 这代表已在实际环境中验证，并非对所有平台与版本的兼容性承诺。
+
 中文文档：[安装与打包](docs/release-readiness.md) ·
 [实现经验](docs/connector-playbook.md) · [验证记录](docs/verification.md)。
 
 Four [GetY](https://gety.ai) connectors for searching local AI-client sessions and
-memory, plus a reusable development playbook. The maintainer reports that the
-new OpenCode and Trae connectors worked on their work computer (2026-10-19).
+memory, plus a reusable development playbook. **Manual testing (2026-10-19):** the maintainer confirms that **all four**
+connectors (DSH, WorkBuddy, OpenCode, and Trae) were installed and used
+successfully. This is a real-world usage check, not a cross-platform or
+all-version compatibility certification.
 
 | Connector | Client | What it indexes | One-click? |
 | --- | --- | --- | --- |
@@ -122,9 +126,9 @@ The existing GitHub Actions workflow covers the original DSH / WorkBuddy
 project checks; it has not been extended here to the new connectors.
 Automated checks are separate from installing and trying the plugins in GetY.
 
-**Manual test status:** On **2026-10-19**, the maintainer confirmed successful
-testing of the OpenCode and Trae plugins on their work computer. The underlying
-test environment and coverage are not documented in this repository.
+**Manual test status:** On **2026-10-19**, the maintainer confirmed all four
+connectors (DSH, WorkBuddy, OpenCode, Trae) were tested in actual use and
+functioned normally. Platform/version coverage is not comprehensively documented.
 
 For a Chinese quick start and the release scope, see
 [docs/release-readiness.md](docs/release-readiness.md). To prepare runtime
